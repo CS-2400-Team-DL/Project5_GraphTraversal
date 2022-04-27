@@ -5,6 +5,8 @@ public class Driver{
 
         AdjacencyMatrixGraph g2 = Task2Graph();
         g2.printMatrix();
+        g2.DepthFirstTraversalPrint('Q');
+        g2.DepthFirstTraversalPrint('A');
         g2.clear();
         g2.printMatrix();
 
@@ -28,18 +30,19 @@ public class Driver{
         g.addVertex('I');
         //g.addEdges(0, 1);
         g.addEdges('A', 'B');
-        g.addEdges(0, 3);
-        g.addEdges(0, 4);
-        g.addEdges(1, 4);
-        g.addEdges(3, 6);
-        g.addEdges(4, 5);
-        g.addEdges(4, 7);
-        g.addEdges(6, 7);
-        g.addEdges(5, 2);
-        g.addEdges(5, 7);
-        g.addEdges(7, 8);
-        g.addEdges(2, 1);
-        g.addEdges(8, 5);
+        g.addEdges('A', 'D');
+        g.addEdges('A', 'E');
+        g.addEdges('B', 'E');
+        g.addEdges('D', 'G');
+        g.addEdges('E', 'F');
+        g.addEdges('E', 'H');
+        g.addEdges('G', 'H');
+        g.addEdges('F', 'C');
+        g.addEdges('F', 'H');
+        g.addEdges('H', 'I');
+        g.addEdges('C', 'B');
+        //g.addEdges(8, 5);
+        g.addEdges('I', 'F');
 
         return g;
     }

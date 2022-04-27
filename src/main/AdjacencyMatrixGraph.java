@@ -38,21 +38,24 @@ public class AdjacencyMatrixGraph{
 
     public boolean addEdges(char src, char dst){
 
-        int srcIndex = verticesCount;
-        int dstIndex = verticesCount;
+        int srcIndex = labelToInt(src);
+        int dstIndex = labelToInt(dst);
 
-        for(int i=0;i<vertices.length;i++){
-
-            char label = vertices[i].getLabel();
-
-            if(label == src){
-                srcIndex = vertices[i].getIndex();
-            }
-            if(label == dst){
-                dstIndex = vertices[i].getIndex();
-            }
-        }
         return addEdges(srcIndex, dstIndex);
+
+    }
+
+    private int labelToInt(char label){
+
+        for(int i=0; i<vertices.length; i++){
+
+            char currentLabel = vertices[i].getLabel();
+            if (currentLabel == label){
+                    return vertices[i].getIndex();
+            }
+
+        }
+        return vertices.length;
     }
 
     public boolean checkEdge(int src, int dst){
@@ -87,6 +90,19 @@ public class AdjacencyMatrixGraph{
         }
     }
 
+    public void DepthFirstTraversalPrint(int tStart){
+
+
+    }
+
+    public void DepthFirstTraversalPrint(char label){
+        int index = labelToInt(label);
+        if(index < vertices.length){
+            DepthFirstTraversalPrint(index);
+        } else {
+            System.out.println("\n\n Label is not found\n\n");
+        }
+    }
 
 }
 
