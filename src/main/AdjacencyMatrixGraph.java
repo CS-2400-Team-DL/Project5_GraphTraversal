@@ -1,5 +1,7 @@
 package main;
 
+import java.util.EmptyStackException;
+
 //V = { A, B, C, D, E, F, G, H, I }
 //E = { (A,B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
 
@@ -91,7 +93,8 @@ public class AdjacencyMatrixGraph{
     }
 
     public void DepthFirstTraversalPrint(int tStart){
-
+    	
+    	
 
     }
 
@@ -139,3 +142,89 @@ class Vertex{
     }
 
 }
+
+class Stack{
+		
+	private Integer[] stack;
+	private int position;
+	final int MAX_SIZE = 10000;
+	
+	public Stack() {
+		stack = new Integer[5];
+		position = 0;
+	}
+	
+	boolean push(int input) {
+		try {
+			
+		stack[position] = input;
+		position++;
+		return true;
+		
+		} catch (ArrayIndexOutOfBoundsException e) {
+			if(growArray()) {
+				return push(input);
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	private boolean growArray() {
+		
+		Integer[] tmpStk;
+		int newSize = stack.length * 2;
+		
+		if(newSize < MAX_SIZE){
+			tmpStk = new Integer[newSize];
+			
+			for(int i=0;i<stack.length;i++) {
+				tmpStk[i] = stack[i];
+			}
+			stack = tmpStk;
+			return true;
+			
+		} else if ((newSize>MAX_SIZE) && (stack.length<MAX_SIZE)) {
+			tmpStk = new Integer[MAX_SIZE];
+			for(int i=0;i<stack.length;i++) {
+				tmpStk[i] = stack[i];
+			}
+			stack = tmpStk;
+			return true;
+		} else {
+			System.out.println("\n\nTHE ARRAY IS AT MAX CAPACITY\n\n");
+			return false;
+		}
+	}
+	
+	int pop() {
+		
+		if(isEmpty()) {
+			throw new EmptyStackException();
+		} else {
+			
+			int value = stack[position];
+			stack[position] = null;
+			position--;
+			return value;
+			
+		}
+	}
+	
+	int peek() {
+		if(isEmpty()) {
+			throw new EmptyStackException();
+		} else {
+			
+			int value = stack[position];
+			return value;
+			
+		}
+	}
+	
+	boolean isEmpty() {
+		return stack[0] == null;
+	}
+	
+}
+
