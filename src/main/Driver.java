@@ -7,7 +7,6 @@ public class Driver{
         g2.printMatrix();
         g2.DepthFirstTraversalPrint('A');
         g2.clear();
-        g2.printMatrix();
 
     }
 
@@ -17,7 +16,6 @@ public class Driver{
         //E = { (A,B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
 
         AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(9);
-
         g.addVertex('A');
         g.addVertex('B');
         g.addVertex('C');
@@ -27,7 +25,7 @@ public class Driver{
         g.addVertex('G');
         g.addVertex('H');
         g.addVertex('I');
-        //g.addEdges(0, 1);
+        
         g.addEdges('A', 'B');
         g.addEdges('A', 'D');
         g.addEdges('A', 'E');
@@ -42,7 +40,7 @@ public class Driver{
         g.addEdges('C', 'B');
         //g.addEdges(8, 5);
         g.addEdges('I', 'F');
-
+        
         return g;
     }
 }

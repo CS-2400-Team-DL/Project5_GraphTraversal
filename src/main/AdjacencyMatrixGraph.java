@@ -2,21 +2,28 @@ package main;
 
 import java.util.EmptyStackException;
 
-//V = { A, B, C, D, E, F, G, H, I }
-//E = { (A,B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
-
 public class AdjacencyMatrixGraph{
     
     private int[][] matrix;
     private Vertex[] vertices; 
     private int verticesCount;
 
+    /**
+     * Constructor for the graph. Initialize the variables of the graph including the adjacency matrix.
+     * The graph's size cannot be changed after it is constructed thus a size must be given. 
+     * @param size - The max amount of vertexes in the graph. Cannot be changed.
+     */
     public AdjacencyMatrixGraph(int size){
         matrix = new int[size][size];
         vertices = new Vertex[size];
         verticesCount = 0;
     }
 
+    /**
+     * 
+     * @param label
+     * @return
+     */
     public boolean addVertex(Character label){
         try {
             vertices[verticesCount] = new Vertex(label, verticesCount);
@@ -27,7 +34,12 @@ public class AdjacencyMatrixGraph{
             return false;
         }
     }
-
+    /**
+     * 
+     * @param src
+     * @param dst
+     * @return
+     */
     public boolean addEdges(int src, int dst){
         try {
             matrix[src][dst] = 1;
@@ -37,7 +49,13 @@ public class AdjacencyMatrixGraph{
             return false;
         }
     }
-
+    
+    /**
+     * 
+     * @param src
+     * @param dst
+     * @return
+     */
     public boolean addEdges(char src, char dst){
 
         int srcIndex = labelToInt(src);
@@ -59,25 +77,47 @@ public class AdjacencyMatrixGraph{
         }
         return vertices.length;
     }
-
+    /**
+     * 
+     * @param src
+     * @param dst
+     * @return
+     */
     public boolean checkEdge(int src, int dst){
         return matrix[src][dst] == 1;
     }
-
+    
+    /**
+     * 
+     * @return
+     */
     public boolean isEmpty(){
         return verticesCount == 0;
     }
-
+    
+    /**
+     * 
+     */
     public void printMatrix(){
-        System.out.println("\nMartix ==");
+    	
+        System.out.println("\nMartix - Row=Src Col=Dst ");
+        
+        System.out.print("   ");
+        for(int i=0; i<verticesCount; i++) {
+        	System.out.print(vertices[i].toString()+ " ");
+        } System.out.println("");
+        
         for(int i=0; i<verticesCount; i++){
+        	System.out.print(" " + vertices[i].toString() + " ");
             for(int j=0; j<verticesCount; j++){
                 System.out.print( matrix[i][j] + " " );
-            }
-            System.out.println("\n");
-        }
+            } System.out.println("");
+        } System.out.print("\n");  
     }
-
+    
+    /**
+     * 
+     */
     public void clear(){
         if(verticesCount > 0){
             int reset = verticesCount - 1;
@@ -91,7 +131,11 @@ public class AdjacencyMatrixGraph{
             verticesCount = 0;
         }
     }
-
+    
+    /**
+     * 
+     * @param tStart
+     */
     public void DepthFirstTraversalPrint(int tStart){
     	
     	ArrayStack<Vertex> stack = new ArrayStack<Vertex>();
@@ -102,12 +146,13 @@ public class AdjacencyMatrixGraph{
 			System.out.println("\n\n Index not in bound");
 		}
     	
+    	System.out.println("Depth First Traversal: ");
     	while(!stack.isEmpty()) {
     		Vertex active = stack.pop();
     		if(active!=null && !active.getVisited()) {
         		int activeIndex = active.getIndex();
     			active.setVisited(true);
-    			System.out.println(active.toString());
+    			System.out.print(active.toString() + " ");
     			
     			//get all neighbors push to stack in reverse
     			for(int i=matrix.length; i!=0;) {
@@ -121,9 +166,17 @@ public class AdjacencyMatrixGraph{
     		} // IF-END
     		
     	} // WHILE_END
+    	System.out.println("");
+    	for(int i=0; i<vertices.length;i++) {
+    		vertices[i].setVisited(false);
+    	}
     	
     } // TRAVERSAL-END
 
+    /**
+     * 
+     * @param label
+     */
     public void DepthFirstTraversalPrint(char label){
         int index = labelToInt(label);
         if(index < vertices.length){
@@ -135,7 +188,7 @@ public class AdjacencyMatrixGraph{
 
 }
 
-class Vertex{
+final class Vertex{
 
     private char label;
     private int index;
@@ -179,11 +232,11 @@ class Vertex{
 
 }
 
-class ArrayStack<T>{
+final class ArrayStack<T>{
 		
 	private T[] stack;
 	private int position;
-	final int MAX_SIZE = 10000;
+	final private int MAX_SIZE = 10000;
 	
 	public ArrayStack() {
 		
