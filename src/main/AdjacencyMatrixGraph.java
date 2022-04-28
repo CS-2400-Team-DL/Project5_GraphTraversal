@@ -94,9 +94,35 @@ public class AdjacencyMatrixGraph{
 
     public void DepthFirstTraversalPrint(int tStart){
     	
+    	ArrayStack<Vertex> stack = new ArrayStack<Vertex>();
     	
-
-    }
+    	try {
+        	stack.push(vertices[tStart]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("\n\n Index not in bound");
+		}
+    	
+    	while(!stack.isEmpty()) {
+    		Vertex active = stack.pop();
+    		if(active!=null && !active.getVisited()) {
+        		int activeIndex = active.getIndex();
+    			active.setVisited(true);
+    			System.out.println(active.toString());
+    			
+    			//get all neighbors push to stack in reverse
+    			for(int i=matrix.length; i!=0;) {
+    				i--;
+    				Vertex vertex = vertices[i];
+    				if (matrix[activeIndex][i] == 1) {
+    					stack.push(vertex);
+    				}
+    			} // FOR-END
+    			
+    		} // IF-END
+    		
+    	} // WHILE_END
+    	
+    } // TRAVERSAL-END
 
     public void DepthFirstTraversalPrint(char label){
         int index = labelToInt(label);
@@ -113,11 +139,13 @@ class Vertex{
 
     private char label;
     private int index;
+    private boolean visited;
 
     public Vertex(char label, int index){
 
         this.label = label;
         this.index = index;
+        this.visited = false;
     }
 
     public char getLabel(){
@@ -135,6 +163,14 @@ class Vertex{
     public void setIndex(int input){
         this.index = input;
     }
+    
+    public void setVisited(boolean input) {
+    	this.visited = input;
+    }
+    
+    public boolean getVisited() {
+    	return this.visited;
+    }
 
     @Override
     public String toString(){
@@ -143,18 +179,21 @@ class Vertex{
 
 }
 
-class Stack{
+class ArrayStack<T>{
 		
-	private Integer[] stack;
+	private T[] stack;
 	private int position;
 	final int MAX_SIZE = 10000;
 	
-	public Stack() {
-		stack = new Integer[5];
+	public ArrayStack() {
+		
+		@SuppressWarnings("unchecked")
+		T[] tmpStack = (T[]) new Object[5];
+		stack = tmpStack;
 		position = 0;
 	}
 	
-	boolean push(int input) {
+	boolean push(T input) {
 		try {
 			
 		stack[position] = input;
@@ -170,13 +209,14 @@ class Stack{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private boolean growArray() {
 		
-		Integer[] tmpStk;
+		T[] tmpStk;
 		int newSize = stack.length * 2;
 		
 		if(newSize < MAX_SIZE){
-			tmpStk = new Integer[newSize];
+			tmpStk = (T[])new Object[newSize];
 			
 			for(int i=0;i<stack.length;i++) {
 				tmpStk[i] = stack[i];
@@ -185,7 +225,7 @@ class Stack{
 			return true;
 			
 		} else if ((newSize>MAX_SIZE) && (stack.length<MAX_SIZE)) {
-			tmpStk = new Integer[MAX_SIZE];
+			tmpStk = (T[])new Object[MAX_SIZE];
 			for(int i=0;i<stack.length;i++) {
 				tmpStk[i] = stack[i];
 			}
@@ -197,33 +237,39 @@ class Stack{
 		}
 	}
 	
-	int pop() {
+	T pop() {
 		
 		if(isEmpty()) {
 			throw new EmptyStackException();
 		} else {
 			
-			int value = stack[position];
-			stack[position] = null;
 			position--;
+			T value = stack[position];
+			stack[position] = null;
 			return value;
 			
 		}
 	}
 	
-	int peek() {
+	T peek() {
 		if(isEmpty()) {
 			throw new EmptyStackException();
 		} else {
 			
-			int value = stack[position];
+			T value = stack[position];
 			return value;
 			
 		}
 	}
 	
 	boolean isEmpty() {
-		return stack[0] == null;
+		return position == 0;
+	}
+	
+	void clear() {
+		while(!isEmpty()) {
+			this.pop();
+		}
 	}
 	
 }

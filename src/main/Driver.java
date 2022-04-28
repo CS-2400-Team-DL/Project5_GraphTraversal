@@ -5,7 +5,6 @@ public class Driver{
 
         AdjacencyMatrixGraph g2 = Task2Graph();
         g2.printMatrix();
-        g2.DepthFirstTraversalPrint('Q');
         g2.DepthFirstTraversalPrint('A');
         g2.clear();
         g2.printMatrix();
