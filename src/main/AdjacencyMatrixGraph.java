@@ -20,9 +20,9 @@ public class AdjacencyMatrixGraph{
     }
 
     /**
-     * 
-     * @param label
-     * @return
+     * Adds a vertex to the graph as long as there is space. 
+     * @param label - The char that will identify the vertex
+     * @return True if the vertex was created, false if the graph is full.
      */
     public boolean addVertex(Character label){
         try {
@@ -35,12 +35,13 @@ public class AdjacencyMatrixGraph{
         }
     }
     /**
-     * 
-     * @param src
-     * @param dst
+     * Creates an edge between two given indexes. Their edge is updated on the adjacency matrix.
+     * @param src - index of the source vertex
+     * @param dst - index of the destination vertex
      * @return
      */
     public boolean addEdges(int src, int dst){
+        
         try {
             matrix[src][dst] = 1;
             return true;
@@ -51,9 +52,10 @@ public class AdjacencyMatrixGraph{
     }
     
     /**
-     * 
-     * @param src
-     * @param dst
+     * Creates an edge between two vertexes. Given two char labels for the vertexes their index will be found
+     * and handed of to addEdges(int src, int dst).
+     * @param src - label of src vertex
+     * @param dst - label of dst vertex
      * @return
      */
     public boolean addEdges(char src, char dst){
@@ -65,6 +67,12 @@ public class AdjacencyMatrixGraph{
 
     }
 
+    /**
+     * Finds the respective index of a given label. If no matching label is found it will return a number out bounds of the
+     * vertices array.
+     * @param label - char to be searched
+     * @return the index of the matching label vertex.
+     */
     private int labelToInt(char label){
 
         for(int i=0; i<vertices.length; i++){
@@ -78,25 +86,25 @@ public class AdjacencyMatrixGraph{
         return vertices.length;
     }
     /**
-     * 
-     * @param src
-     * @param dst
-     * @return
+     * Checks the adjacency matrix to see if an edge exist.
+     * @param src - index of the source vertex
+     * @param dst - index of the destination vertex
+     * @return True if the edge exist.
      */
     public boolean checkEdge(int src, int dst){
         return matrix[src][dst] == 1;
     }
     
     /**
-     * 
-     * @return
+     * Checks if the graph has any vertexes
+     * @return True if vertex is empty
      */
     public boolean isEmpty(){
         return verticesCount == 0;
     }
     
     /**
-     * 
+     * Prints the adjacency matrix of the graph to console.
      */
     public void printMatrix(){
     	
@@ -116,7 +124,7 @@ public class AdjacencyMatrixGraph{
     }
     
     /**
-     * 
+     * Empties the graph but does not change size of the graph.
      */
     public void clear(){
         if(verticesCount > 0){
@@ -133,33 +141,37 @@ public class AdjacencyMatrixGraph{
     }
     
     /**
-     * 
-     * @param tStart
+     * Traverses the graph using a Depth First Traversal. Will print the path of traversal to console
+     * @param tStart the index of the stating vertex.
      */
     public void DepthFirstTraversalPrint(int tStart){
     	
     	ArrayStack<Vertex> stack = new ArrayStack<Vertex>();
     	
-    	try {
+    	try { // Checks if given index is valid and pushes it to the stack. Will not enter while loop unless it succedes.
         	stack.push(vertices[tStart]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("\n\n Index not in bound");
+			System.out.print("\n\nIndex not in bound");
 		}
     	
     	System.out.println("Depth First Traversal: ");
+        
+        Vertex active, vertex;
     	while(!stack.isEmpty()) {
-    		Vertex active = stack.pop();
-    		if(active!=null && !active.getVisited()) {
+
+    		active = stack.pop(); // Get Next working vertex
+
+    		if(!active.wasVisited()) { 
+
+                active.setVisited(true);
         		int activeIndex = active.getIndex();
-    			active.setVisited(true);
-    			System.out.print(active.toString() + " ");
+    			System.out.print( active.toString() + " "); // Prints Current Vertex
     			
-    			//get all neighbors push to stack in reverse
-    			for(int i=matrix.length; i!=0;) {
-    				i--;
-    				Vertex vertex = vertices[i];
-    				if (matrix[activeIndex][i] == 1) {
-    					stack.push(vertex);
+    			for(int i=matrix.length; i!=0;) { // Iterate through all of the vertex's row in the matrix to find neightbors
+    				i--; // Start from the end. Fill the stack backwards.
+    				if (checkEdge(activeIndex, i)) {
+                        vertex = vertices[i];
+    					stack.push(vertex); // if the vertex is adjacent push to the stack
     				}
     			} // FOR-END
     			
@@ -167,15 +179,16 @@ public class AdjacencyMatrixGraph{
     		
     	} // WHILE_END
     	System.out.println("");
-    	for(int i=0; i<vertices.length;i++) {
+
+    	for(int i=0; i<vertices.length;i++) { //RESET visited status of vertexes
     		vertices[i].setVisited(false);
     	}
     	
     } // TRAVERSAL-END
 
     /**
-     * 
-     * @param label
+     * Finds the given label's index and hands it over to do a depth first traversal.
+     * @param label - the label of a vertex where traversal will start
      */
     public void DepthFirstTraversalPrint(char label){
         int index = labelToInt(label);
@@ -221,7 +234,7 @@ final class Vertex{
     	this.visited = input;
     }
     
-    public boolean getVisited() {
+    public boolean wasVisited() {
     	return this.visited;
     }
 
