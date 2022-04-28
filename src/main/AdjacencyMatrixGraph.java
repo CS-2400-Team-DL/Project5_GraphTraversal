@@ -7,22 +7,35 @@ public class AdjacencyMatrixGraph{
     private int[][] matrix;
     private Vertex[] vertices; 
     private int verticesCount;
+    final int MAXSIZE = 10000;
+    final int DEFAULT = 10;
+
+    public AdjacencyMatrixGraph(){
+        matrix = new int[DEFAULT][DEFAULT];
+        vertices = new Vertex[DEFAULT];
+        verticesCount = 0;
+    }
 
     /**
      * Constructor for the graph. Initialize the variables of the graph including the adjacency matrix.
-     * The graph's size cannot be changed after it is constructed thus a size must be given. 
-     * @param size - The max amount of vertexes in the graph. Cannot be changed.
+     * @param size - The max amount of vertexes that will fit in the graph.
      */
     public AdjacencyMatrixGraph(int size){
-        matrix = new int[size][size];
-        vertices = new Vertex[size];
-        verticesCount = 0;
+        if(size <= MAXSIZE){
+            matrix = new int[size][size];
+            vertices = new Vertex[size];
+            verticesCount = 0;
+        }else{
+            matrix = new int[MAXSIZE][MAXSIZE];
+            vertices = new Vertex[MAXSIZE];
+            verticesCount = 0;
+        }
     }
 
     /**
      * Adds a vertex to the graph as long as there is space. 
      * @param label - The char that will identify the vertex
-     * @return True if the vertex was created, false if the graph is full.
+     * @return True if the vertex was created, false if the graph is at max capacity.
      */
     public boolean addVertex(Character label){
         try {
@@ -30,10 +43,37 @@ public class AdjacencyMatrixGraph{
             verticesCount++;
             return true;
         } catch(ArrayIndexOutOfBoundsException e) {
+            if(growGraph()){
+                return addVertex(label);
+            }
             System.out.println("\n\n The Graph is full\n\n");
             return false;
         }
     }
+
+    private boolean growGraph(){
+
+        if(vertices.length > MAXSIZE) { return false; }
+        
+        int newSize = (int) (vertices.length * 1.5);
+        if(newSize > MAXSIZE) { newSize = MAXSIZE; }
+        
+        Vertex[] newVertices = new Vertex[newSize];
+        for(int i=0;i<vertices.length;i++){
+            newVertices[i] = vertices[i];
+        }
+        vertices = newVertices;
+
+        int newMatrix[][] = new int[newSize][newSize];
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix.length;j++){
+                newMatrix[i][j] = matrix[i][j];
+            }
+        }
+        matrix = newMatrix;
+        return true;
+    }
+
     /**
      * Creates an edge between two given indexes. Their edge is updated on the adjacency matrix.
      * @param src - index of the source vertex
@@ -42,18 +82,17 @@ public class AdjacencyMatrixGraph{
      */
     public boolean addEdges(int src, int dst){
         
-        try {
+        if (indexExist(src) && indexExist(dst)){
             matrix[src][dst] = 1;
             return true;
-        } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
-            return false;
         }
+        System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
+        return false;
     }
     
     /**
      * Creates an edge between two vertexes. Given two char labels for the vertexes their index will be found
-     * and handed of to addEdges(int src, int dst).
+     * and an edge will be created if they exist.
      * @param src - label of src vertex
      * @param dst - label of dst vertex
      * @return
@@ -62,28 +101,42 @@ public class AdjacencyMatrixGraph{
 
         int srcIndex = labelToInt(src);
         int dstIndex = labelToInt(dst);
-
-        return addEdges(srcIndex, dstIndex);
-
+        try{
+            matrix[srcIndex][dstIndex] = 1;
+            return true;
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
+            return false;
+        }
     }
 
     /**
      * Finds the respective index of a given label. If no matching label is found it will return a number out bounds of the
-     * vertices array.
+     * vertices array. If no index is found will return a number out of bound, given to veritices array will cause an {@link ArrayIndexOutOfBoundsException}
      * @param label - char to be searched
      * @return the index of the matching label vertex.
      */
     private int labelToInt(char label){
 
         for(int i=0; i<vertices.length; i++){
-
-            char currentLabel = vertices[i].getLabel();
-            if (currentLabel == label){
-                    return vertices[i].getIndex();
+            if(vertices[i] != null){
+                char currentLabel = vertices[i].getLabel();
+                if (currentLabel == label){
+                        return vertices[i].getIndex();
+                }
             }
-
         }
         return vertices.length;
+    }
+
+    private boolean indexExist(int index){
+        for(int i=0; i<vertices.length;i++){
+            if (vertices[i] != null && vertices[i].getIndex() == index && index == i) 
+            // Checks if there is a vertex in vertices[i] and makes sure its index is correct.
+                return true;
+            
+        }
+        return false;
     }
     /**
      * Checks the adjacency matrix to see if an edge exist.
@@ -181,7 +234,8 @@ public class AdjacencyMatrixGraph{
     	System.out.println("");
 
     	for(int i=0; i<vertices.length;i++) { //RESET visited status of vertexes
-    		vertices[i].setVisited(false);
+            if(vertices[i] != null)
+    		    vertices[i].setVisited(false);
     	}
     	
     } // TRAVERSAL-END
