@@ -33,7 +33,7 @@ public class AdjacencyMatrixGraph{
     }
 
     /**
-     * Adds a vertex to the graph as long as there is space. 
+     * Adds a floating vertex to the graph as long as there is space. 
      * @param label - The char that will identify the vertex
      * @return True if the vertex was created, false if the graph is at max capacity.
      */
@@ -43,9 +43,8 @@ public class AdjacencyMatrixGraph{
             verticesCount++;
             return true;
         } catch(ArrayIndexOutOfBoundsException e) {
-            if(growGraph()){
+            if(growGraph())
                 return addVertex(label);
-            }
             System.out.println("\n\n The Graph is full\n\n");
             return false;
         }
@@ -85,9 +84,11 @@ public class AdjacencyMatrixGraph{
         if (indexExist(src) && indexExist(dst)){
             matrix[src][dst] = 1;
             return true;
+        } else {
+            System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
+            return false;
         }
-        System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
-        return false;
+
     }
     
     /**
@@ -95,7 +96,7 @@ public class AdjacencyMatrixGraph{
      * and an edge will be created if they exist.
      * @param src - label of src vertex
      * @param dst - label of dst vertex
-     * @return
+     * @return True- if the edge was succefeully created.
      */
     public boolean addEdges(char src, char dst){
 
@@ -125,17 +126,22 @@ public class AdjacencyMatrixGraph{
                         return vertices[i].getIndex();
                 }
             }
-        }
+        } // FOR-END
         return vertices.length;
     }
 
+    /**
+     * Checks if a given index exist in the vertices array and makes sure its index is correct.
+     * @param index - The index that is being search for.
+     * @return True if the index was found in a vertex and the index fits the appropiate vertex.
+     */
     private boolean indexExist(int index){
         for(int i=0; i<vertices.length;i++){
             if (vertices[i] != null && vertices[i].getIndex() == index && index == i) 
             // Checks if there is a vertex in vertices[i] and makes sure its index is correct.
                 return true;
             
-        }
+        } // FOR-END
         return false;
     }
     /**
@@ -145,7 +151,12 @@ public class AdjacencyMatrixGraph{
      * @return True if the edge exist.
      */
     public boolean checkEdge(int src, int dst){
-        return matrix[src][dst] == 1;
+        try{
+            return matrix[src][dst] == 1;
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("\n\nSRC or DST is out of bound or not found");
+            return false;
+        }
     }
     
     /**
@@ -161,15 +172,14 @@ public class AdjacencyMatrixGraph{
      */
     public void printMatrix(){
     	
-        System.out.println("\nMartix - Row=Src Col=Dst ");
+        System.out.print("\n\nMartix - Row=Src Col=Dst\n   ");
         
-        System.out.print("   ");
-        for(int i=0; i<verticesCount; i++) {
+        for(int i=0; i<verticesCount; i++) { // prints a row of labels on top of the matrix
         	System.out.print(vertices[i].toString()+ " ");
         } System.out.println("");
         
         for(int i=0; i<verticesCount; i++){
-        	System.out.print(" " + vertices[i].toString() + " ");
+        	System.out.print(" " + vertices[i].toString() + " "); // Print the label before the matrix's row
             for(int j=0; j<verticesCount; j++){
                 System.out.print( matrix[i][j] + " " );
             } System.out.println("");
@@ -231,7 +241,7 @@ public class AdjacencyMatrixGraph{
     		} // IF-END
     		
     	} // WHILE_END
-    	System.out.println("");
+    	System.out.println("\n");
 
     	for(int i=0; i<vertices.length;i++) { //RESET visited status of vertexes
             if(vertices[i] != null)
@@ -252,7 +262,6 @@ public class AdjacencyMatrixGraph{
             System.out.println("\n\n Label is not found\n\n");
         }
     }
-
 }
 
 final class Vertex{
