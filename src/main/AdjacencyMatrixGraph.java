@@ -7,7 +7,7 @@ public class AdjacencyMatrixGraph{
     private int[][] matrix;
     private Vertex[] vertices; 
     private int verticesCount;
-    final int MAXSIZE = 10000;
+    final int MAXSIZE = 100000;
     final int DEFAULT = 10;
 
     public AdjacencyMatrixGraph(){
@@ -54,7 +54,7 @@ public class AdjacencyMatrixGraph{
 
         if(vertices.length > MAXSIZE) { return false; }
         
-        int newSize = (int) (vertices.length * 1.5);
+        int newSize = (vertices.length * 2);
         if(newSize > MAXSIZE) { newSize = MAXSIZE; }
         
         Vertex[] newVertices = new Vertex[newSize];
@@ -85,7 +85,7 @@ public class AdjacencyMatrixGraph{
             matrix[src][dst] = 1;
             return true;
         } else {
-            System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
+            System.out.println(" \n\n (INT)Source or Destination Vertex does not exist\n\n");
             return false;
         }
 
@@ -106,7 +106,7 @@ public class AdjacencyMatrixGraph{
             matrix[srcIndex][dstIndex] = 1;
             return true;
         } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println(" \n\n Source or Destination Vertex does not exist\n\n");
+            System.out.println(" \n\n (CHAR)Source or Destination Vertex does not exist\n\n");
             return false;
         }
     }
@@ -150,7 +150,7 @@ public class AdjacencyMatrixGraph{
      * @param dst - index of the destination vertex
      * @return True if the edge exist.
      */
-    public boolean checkEdge(int src, int dst){
+    public boolean hasEdge(int src, int dst){
         try{
             return matrix[src][dst] == 1;
         } catch (ArrayIndexOutOfBoundsException e){
@@ -219,29 +219,24 @@ public class AdjacencyMatrixGraph{
     	
     	System.out.println("Depth First Traversal: ");
         
-        Vertex active, vertex;
     	while(!stack.isEmpty()) {
 
-    		active = stack.pop(); // Get Next working vertex
+    		Vertex active = stack.pop(); // Get Next vertex
 
     		if(!active.wasVisited()) { 
-
                 active.setVisited(true);
-        		int activeIndex = active.getIndex();
+
     			System.out.print( active.toString() + " "); // Prints Current Vertex
     			
-    			for(int i=matrix.length; i!=0;) { // Iterate through all of the vertex's row in the matrix to find neightbors
-    				i--; // Start from the end. Fill the stack backwards.
-    				if (checkEdge(activeIndex, i)) {
-                        vertex = vertices[i];
-    					stack.push(vertex); // if the vertex is adjacent push to the stack
+    			for(int i = (matrix.length-1); i!=0; i--) { // Iterate through all of the vertex's row in the matrix to find neightbors
+    				if (hasEdge(active.getIndex(), i)) { // active -> i
+    					stack.push(vertices[i]); // push to the stack
     				}
-    			} // FOR-END
-    			
-    		} // IF-END
-    		
-    	} // WHILE_END
-    	System.out.println("\n");
+    			} 	
+    		} 	
+    	} 
+
+    	System.out.println("");
 
     	for(int i=0; i<vertices.length;i++) { //RESET visited status of vertexes
             if(vertices[i] != null)
@@ -278,7 +273,7 @@ final class Vertex{
     }
 
     public char getLabel(){
-        return this.label;
+        return label;
     }
 
     public void setLabel(char input){
@@ -286,7 +281,7 @@ final class Vertex{
     }
 
     public int getIndex(){
-        return this.index;
+        return index;
     }
 
     public void setIndex(int input){
@@ -298,12 +293,12 @@ final class Vertex{
     }
     
     public boolean wasVisited() {
-    	return this.visited;
+    	return visited;
     }
 
     @Override
     public String toString(){
-        return String.valueOf(this.label);
+        return String.valueOf(label);
     }
 
 }
@@ -312,7 +307,7 @@ final class ArrayStack<T>{
 		
 	private T[] stack;
 	private int position;
-	final private int MAX_SIZE = 10000;
+	final private int MAX_SIZE = 100000;
 	
 	public ArrayStack() {
 		
@@ -342,10 +337,10 @@ final class ArrayStack<T>{
 	private boolean growArray() {
 		
 		T[] tmpStk;
-		int newSize = stack.length * 2;
+		int newSize = (int) (stack.length * 1.5);
 		
 		if(newSize < MAX_SIZE){
-			tmpStk = (T[])new Object[newSize];
+			tmpStk = (T[]) new Object[newSize];
 			
 			for(int i=0;i<stack.length;i++) {
 				tmpStk[i] = stack[i];
@@ -353,13 +348,15 @@ final class ArrayStack<T>{
 			stack = tmpStk;
 			return true;
 			
-		} else if ((newSize>MAX_SIZE) && (stack.length<MAX_SIZE)) {
+		} else if ((newSize>MAX_SIZE) && (stack.length<MAX_SIZE+1)) {
 			tmpStk = (T[])new Object[MAX_SIZE];
+
 			for(int i=0;i<stack.length;i++) {
 				tmpStk[i] = stack[i];
 			}
 			stack = tmpStk;
 			return true;
+
 		} else {
 			System.out.println("\n\nTHE ARRAY IS AT MAX CAPACITY\n\n");
 			return false;

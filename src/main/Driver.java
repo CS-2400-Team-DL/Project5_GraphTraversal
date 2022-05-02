@@ -3,19 +3,18 @@ package main;
 public class Driver{
     public static void main(String[] args){
 
-        AdjacencyMatrixGraph g2 = Task2Graph();
+        AdjacencyMatrixGraph g2 = AMGraph();
         g2.printMatrix();
         g2.DepthFirstTraversalPrint('A');
         g2.clear();
 
     }
 
-    private static AdjacencyMatrixGraph Task2Graph(){
+    private static AdjacencyMatrixGraph AMGraph(){
 
-        //V = { A, B, C, D, E, F, G, H, I }
-        //E = { (A,B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
 
         AdjacencyMatrixGraph g = new AdjacencyMatrixGraph();
+        //V = { A, B, C, D, E, F, G, H, I }
         g.addVertex('A');
         g.addVertex('B');
         g.addVertex('C');
@@ -26,6 +25,7 @@ public class Driver{
         g.addVertex('H');
         g.addVertex('I');
         
+        //E = { (A,B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
         g.addEdges('A', 'B');
         g.addEdges('A', 'D');
         g.addEdges('A', 'E');
@@ -38,7 +38,6 @@ public class Driver{
         g.addEdges('F', 'H');
         g.addEdges('H', 'I');
         g.addEdges('C', 'B');
-        //g.addEdges(8, 5);
         g.addEdges('I', 'F');
         
         return g;

@@ -2,23 +2,75 @@ package test;
 
 import main.AdjacencyMatrixGraph;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.junit.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 
 public class AdjacencyMatrixTest{
 
-    AdjacencyMatrixGraph g;
 
-    @BeforeEach
-    void inibeforet(){
+    @Test
+    public void addVertexTest(){
+        
+        AdjacencyMatrixGraph g1 = new AdjacencyMatrixGraph(1);
+        assertTrue(g1.addVertex('A'));
 
-        g = new AdjacencyMatrixGraph(4);
+    }
+
+    @Test
+    public void growGraphTest(){
+
+        AdjacencyMatrixGraph g2 = new AdjacencyMatrixGraph(1);
+        g2.addVertex('A');
+        assertTrue(g2.addVertex('B'));
+
+    }
+
+    @Test
+    public void edgeCreateTest(){
+
+        AdjacencyMatrixGraph g3 = new AdjacencyMatrixGraph(2);
+        g3.addVertex('A');
+        g3.addVertex('B');
+
+        assertTrue(g3.addEdges('A', 'B'));
+
+    }
+
+    @Test
+    public void hasEdgeTest1(){
+
+        AdjacencyMatrixGraph g4 = new AdjacencyMatrixGraph(2);
+        g4.addVertex('A');
+        g4.addVertex('B');
+        g4.addEdges('A', 'B');
+
+        assertTrue(g4.hasEdge(0, 1));
+    
+    }
+
+    @Test
+    public void hasEdgeTest2(){
+
+        AdjacencyMatrixGraph g4 = new AdjacencyMatrixGraph(2);
+        g4.addVertex('A');
+        g4.addVertex('B');
+        g4.addEdges('A', 'B');
+
+        assertFalse(g4.hasEdge(1, 0));
+    
+    }
+
+
+    @Test
+    public void SquareTraversal(){
+
+        AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(4);
         g.addVertex('A');
         g.addVertex('B');
         g.addVertex('C');
@@ -29,23 +81,13 @@ public class AdjacencyMatrixTest{
         g.addEdges('C', 'D');
         g.addEdges('D', 'A');
 
-    }
-
-    @Test
-    void TraversalFromA(){
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
+
         g.DepthFirstTraversalPrint('A');
-        System.out.println(baos.toString());
 
-        assertEquals("A B C D", baos.toString());
-    }
-
-    @AfterEach
-    void after(){
-        g.clear();
-    }
+        assertEquals("Depth First Traversal: \nA B C D \n", baos.toString());
+    }       
 
 
 }
