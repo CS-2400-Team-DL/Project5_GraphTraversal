@@ -86,7 +86,7 @@ public class AdjacencyMatrixTest{
 
         g.DepthFirstTraversalPrint('A');
 
-        assertEquals("Depth First Traversal: \nA B C D \n", baos.toString());
+        assertEquals("Depth First Traversal:\nA B C D \n", baos.toString());
     }       
 
 

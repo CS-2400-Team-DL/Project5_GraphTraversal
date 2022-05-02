@@ -35,7 +35,7 @@ Optionals:
 
 Leonardo Davalos:
 
-    0
+    Adjacency Matrix Graph, Depth First Traversal, Unit test for AMG
 
 Dean Mah:
 

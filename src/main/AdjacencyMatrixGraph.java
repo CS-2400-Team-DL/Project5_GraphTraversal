@@ -210,6 +210,7 @@ public class AdjacencyMatrixGraph{
     public void DepthFirstTraversalPrint(int tStart){
     	
     	ArrayStack<Vertex> stack = new ArrayStack<Vertex>();
+    	String toPrint = new String("");
     	
     	try { // Checks if given index is valid and pushes it to the stack. Will not enter while loop unless it succedes.
         	stack.push(vertices[tStart]);
@@ -217,7 +218,7 @@ public class AdjacencyMatrixGraph{
 			System.out.print("\n\nIndex not in bound");
 		}
     	
-    	System.out.println("Depth First Traversal: ");
+    	toPrint = toPrint.concat("Depth First Traversal:\n");
         
     	while(!stack.isEmpty()) {
 
@@ -225,8 +226,8 @@ public class AdjacencyMatrixGraph{
 
     		if(!active.wasVisited()) { 
                 active.setVisited(true);
-
-    			System.out.print( active.toString() + " "); // Prints Current Vertex
+                
+                toPrint = toPrint.concat(active.toString() + " ");
     			
     			for(int i = (matrix.length-1); i!=0; i--) { // Iterate through all of the vertex's row in the matrix to find neightbors
     				if (hasEdge(active.getIndex(), i)) { // active -> i
@@ -235,13 +236,15 @@ public class AdjacencyMatrixGraph{
     			} 	
     		} 	
     	} 
-
-    	System.out.println("");
+    	
+    	toPrint = toPrint.concat("\n");
 
     	for(int i=0; i<vertices.length;i++) { //RESET visited status of vertexes
             if(vertices[i] != null)
     		    vertices[i].setVisited(false);
     	}
+    	
+    	System.out.print(toPrint);
     	
     } // TRAVERSAL-END
 
