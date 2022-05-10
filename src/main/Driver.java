@@ -5,6 +5,7 @@ public class Driver{
 
         AdjacencyMatrixGraph g2 = AMGraph();
         g2.printMatrix();
+        g2.BreadthFirstTraversalPrint('A');
         g2.DepthFirstTraversalPrint('A');
         g2.clear();
 
