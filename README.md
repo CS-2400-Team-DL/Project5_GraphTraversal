@@ -1,5 +1,5 @@
 # Project5_GraphTraversal
-Understand graph and its representations (adjacency matrix and adjacency list). Implement graph traversal algorithms (Breadth-First Traversal and Depth-First Traversal)
+Understand graph and its representations (adjacency matrix and adjacency list). Implement graph traversal algorithms (Breadth-First Traversal and Depth-First Traversal).
 
 ## TODO
 
@@ -11,7 +11,7 @@ In Both Task Create the graph:
     
     E = { (A, B), (A, D), (A, E), (B, E), (D, G), (E, F), (E, H), (G, H), (F, C), (F, H), (H, I), (C, B), (I, F) }
 
-    Using either an adjacency matrixv or an adjacency list.
+    Using either an adjacency matrix or an adjacency list.
 
 
 Task1:
