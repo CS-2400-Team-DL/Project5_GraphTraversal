@@ -261,6 +261,54 @@ public class AdjacencyMatrixGraph{
             System.out.println("\n\n Label is not found\n\n");
         }
     }
+
+    public void BreadthFirstTraversalPrint(int startIndex){
+    	
+    	ArrayQueue<Vertex> queue = new ArrayQueue<Vertex>();
+    	String toPrint = new String("");
+    	
+    	try { // Checks if given index is valid and adds it to the queue. Will not enter while loop unless it succedes.
+        	queue.enqueue(vertices[startIndex]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.print("\n\nIndex not in bound");
+		}
+    	
+    	toPrint = toPrint.concat("Breadth First Traversal:\n");
+        
+    	while(!queue.isEmpty()) {
+
+    		Vertex active = queue.dequeue(); // Get Next vertex
+
+    		if(!active.wasVisited()) { 
+                active.setVisited(true);
+                
+                toPrint = toPrint.concat(active.toString() + " ");
+    			
+    			for(int i = 0; i!=(matrix.length-1); i++) { // Iterate through all of the vertex's row in the matrix to find neightbors
+    				if (hasEdge(active.getIndex(), i)) { // active -> i
+    					queue.enqueue(vertices[i]); // add to the queue
+    				}
+    			} 	
+    		} 	
+    	} 
+    	
+    	toPrint = toPrint.concat("\n");
+
+    	for(int i=0; i<vertices.length;i++) { //RESETS visited status of vertexes
+            if(vertices[i] != null)
+    		    vertices[i].setVisited(false);
+    	}
+    	System.out.print(toPrint);	
+    }
+
+    public void BreadthFirstTraversalPrint(char labelOfVertex){
+        int index = labelToInt(labelOfVertex);
+        if(index < vertices.length){
+            BreadthFirstTraversalPrint(index);
+        } else {
+            System.out.println("\n\n Label is not found\n\n");
+        }
+    }
 }
 
 final class Vertex{
