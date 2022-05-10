@@ -262,6 +262,7 @@ public class AdjacencyMatrixGraph{
         }
     }
 
+    //Traverses the graph using a Breadth First Traversal. Will print the path of traversal to console
     public void BreadthFirstTraversalPrint(int startIndex){
     	
     	ArrayQueue<Vertex> queue = new ArrayQueue<Vertex>();
@@ -301,6 +302,7 @@ public class AdjacencyMatrixGraph{
     	System.out.print(toPrint);	
     }
 
+    //Does a breadth first traversal starting at a specified label's index
     public void BreadthFirstTraversalPrint(char labelOfVertex){
         int index = labelToInt(labelOfVertex);
         if(index < vertices.length){
